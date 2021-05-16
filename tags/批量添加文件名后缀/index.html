@@ -20,10 +20,10 @@
 <meta property="article:author" content="Layne Shieh">
 <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
-  <link rel="stylesheet" href="/css/style.css?v=1621178353750">
+  <link rel="stylesheet" href="/css/style.css?v=1621180064953">
   
-  <link rel="stylesheet" href="/css/style.css?v=1621178353750">
-  <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1621178353750">
+  <link rel="stylesheet" href="/css/style.css?v=1621180064953">
+  <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1621180064953">
 <meta name="generator" content="Hexo 5.4.0"></head>
 
 <body class="mdui-drawer-body-left">
@@ -139,8 +139,8 @@
 
         <div class="nexmoe-post-meta nexmoe-rainbow">
             <a><i class="nexmoefont icon-calendar-fill"></i>2021年05月14日</a>
-            <a><i class="nexmoefont icon-areachart"></i>380 字</a>
-            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 2 分钟</a>
+            <a><i class="nexmoefont icon-areachart"></i>358 字</a>
+            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
         </div>
 
         <article>
@@ -150,11 +150,31 @@
 <p>当然，用编程的方式会做得更好，不论什么重命名方式都可以实现，但为了贪图方便，直接在工作电脑跑bat批处理文件就行~</p>
 <p><strong>实现代码</strong></p>
 <p>（1）需求：doc文档需要统一命名为Rev_3.0.doc后缀</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@echo off</span><br><span class="line">setlocal enabledelayedexpansion</span><br><span class="line">set &quot;rev=Rev_3.0.doc&quot; </span><br><span class="line"></span><br><span class="line">for /F %%i in (&#x27;dir *.doc /b&#x27;) do (</span><br><span class="line">    set &quot;var=%%~ni&quot;</span><br><span class="line">    set &quot;var=!var!%rev%&quot;</span><br><span class="line">    ren &quot;%%i&quot; !var!</span><br><span class="line">    echo !var! success</span><br><span class="line">)</span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
+<pre><code class="c#">@echo off
+setlocal enabledelayedexpansion
+set &quot;rev=Rev_3.0.doc&quot; 
 
+for /F %%i in (&#39;dir *.doc /b&#39;) do (
+    set &quot;var=%%~ni&quot;
+    set &quot;var=!var!%rev%&quot;
+    ren &quot;%%i&quot; !var!
+    echo !var! success
+)
+pause
+</code></pre>
 <p>（2）需求：docx文档需要统一命名为Rev_3.0.docx后缀</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@echo off</span><br><span class="line">setlocal enabledelayedexpansion</span><br><span class="line">set &quot;rev=Rev_3.0.docx&quot;</span><br><span class="line"></span><br><span class="line">for /F %%i in (&#x27;dir *.docx /b&#x27;) do (</span><br><span class="line">    set &quot;var=%%~ni&quot;</span><br><span class="line">    set &quot;var=!var!%rev%&quot;</span><br><span class="line">    ren &quot;%%i&quot; !var!</span><br><span class="line">    echo !var! success</span><br><span class="line">)</span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
+<pre><code class="c#">@echo off
+setlocal enabledelayedexpansion
+set &quot;rev=Rev_3.0.docx&quot;
 
+for /F %%i in (&#39;dir *.docx /b&#39;) do (
+    set &quot;var=%%~ni&quot;
+    set &quot;var=!var!%rev%&quot;
+    ren &quot;%%i&quot; !var!
+    echo !var! success
+)
+pause
+</code></pre>
 <p><strong>食用方法</strong></p>
 <ol>
 <li>根据需要，修改 - set “rev=文件后缀”，“文件后缀”改为具体所需后缀名</li>
@@ -192,7 +212,7 @@
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
  
 
-<script src="/js/app.js?v=1621178353752"></script>
+<script src="/js/app.js?v=1621180064955"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
 <script>
