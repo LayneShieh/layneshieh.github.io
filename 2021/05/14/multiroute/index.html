@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+  
+  <title>多网卡路由配置 - LayneShieh&#39;s World</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/LayneShieh/layneshieh.github.io/imgs/webicon.png" type="image/png" />
+  <meta name="description" content="应用场景 本地电脑有双网卡或多网卡，可通过配置对应网卡的路由网关进行网络分路 常用命令 Windows运行cmd中输入以下命令，可以检查当前路由表配置情况 1route print  如需重置、初始化网络环境，可用 1netsh winsock reset  配置脚本 新建一个*.bat文件，如routetest.bat，然后进行如下编辑 1234route delete 0.0.0.0route">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多网卡路由配置">
+<meta property="og:url" content="http://layneshieh.xyz/2021/05/14/multiroute/index.html">
+<meta property="og:site_name" content="LayneShieh&#39;s World">
+<meta property="og:description" content="应用场景 本地电脑有双网卡或多网卡，可通过配置对应网卡的路由网关进行网络分路 常用命令 Windows运行cmd中输入以下命令，可以检查当前路由表配置情况 1route print  如需重置、初始化网络环境，可用 1netsh winsock reset  配置脚本 新建一个*.bat文件，如routetest.bat，然后进行如下编辑 1234route delete 0.0.0.0route">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-14T02:24:33.000Z">
+<meta property="article:modified_time" content="2021-05-16T15:01:20.057Z">
+<meta property="article:author" content="Layne Shieh">
+<meta property="article:tag" content="多网卡网络分路">
+<meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
+  <link rel="stylesheet" href="/css/style.css?v=1621178353744">
+  
+  <link rel="stylesheet" href="/css/style.css?v=1621178353744">
+  <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1621178353744">
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/LayneShieh/layneshieh.github.io/imgs/icelandic.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="Layne Shieh" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/LayneShieh/layneshieh.github.io/imgs/avatar.jpg" alt="Layne Shieh"></a>
+       </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Layne Shieh">
+            <img src="https://cdn.jsdelivr.net/gh/LayneShieh/layneshieh.github.io/imgs/avatar.jpg" alt="Layne Shieh" alt="Layne Shieh">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>3</div>
+        <div><span>标签</span>3</div>
+        <div><span>分类</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=site:layneshieh.xyz" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/40181604" target="_blank" mdui-tooltip="{content: 'bilibili'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/LayneShieh/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%88%96%E5%B7%A5%E5%85%B7/" style="font-size: 10px;">Linux常用命令或工具</a> <a href="/tags/%E5%A4%9A%E7%BD%91%E5%8D%A1%E7%BD%91%E7%BB%9C%E5%88%86%E8%B7%AF/" style="font-size: 10px;">多网卡网络分路</a> <a href="/tags/%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E6%96%87%E4%BB%B6%E5%90%8D%E5%90%8E%E7%BC%80/" style="font-size: 10px;">批量添加文件名后缀</a>
+    </div>
+    
+  </div>
+
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2021 Layne Shieh
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+
+  <article>
+    
+        <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+            <img data-src="https://cdn.jsdelivr.net/gh/LayneShieh/layneshieh.github.io/imgs/icelandic.jpg" data-sizes="auto" alt="多网卡路由配置" class="lazyload">
+            <h1>多网卡路由配置</h1>
+        </div>
+    
+    
+    <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2021年05月14日</a>
+    <a><i class="nexmoefont icon-areachart"></i>422 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 2 分钟</a>
+</div>
+
+    
+
+    <p><strong>应用场景</strong></p>
+<p>本地电脑有双网卡或多网卡，可通过配置对应网卡的路由网关进行网络分路</p>
+<p><strong>常用命令</strong></p>
+<p>Windows运行cmd中输入以下命令，可以检查当前路由表配置情况</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route print</span><br></pre></td></tr></table></figure>
+
+<p>如需重置、初始化网络环境，可用</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh winsock reset</span><br></pre></td></tr></table></figure>
+
+<p><strong>配置脚本</strong></p>
+<p>新建一个*.bat文件，如routetest.bat，然后进行如下编辑</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">route delete 0.0.0.0</span><br><span class="line">route add 186.1.0.0 mask 255.255.0.0 A.A.A.1</span><br><span class="line">route add 10.1.0.0 mask 255.255.0.0 A.A.A.1</span><br><span class="line">route add 0.0.0.0 mask 0.0.0.0 B.B.B.1</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>A.A.A.1是A网卡的网关地址，B.B.B.1是B网卡的网关地址，如还有更多的网卡则以此类推</li>
+<li>“add”后接的IP指所需访问的网段或IP，如果子网掩码是255.255.255.255，则可指定具体IP</li>
+<li>例，第二行命令的意思是如果访问186.1.0.0网段，那么将从A.A.A.1的网关出去，即走A网卡</li>
+</ol>
+<p>网卡的对应网关，可通过cmd如下命令查询，或者进入“打开网络和共享中心”（控制面板\网络和 Internet\网络连接），右键对应网卡，选择“状态”-“详细信息”，亦可查询到默认网关</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipconfig</span><br></pre></td></tr></table></figure>
+
+<p><strong>PS</strong>：此处有个坑，如果文件名为route.bat，那么跑bat文件就会一直执行无法停止，因此不能用该文件名</p>
+<p>IP与掩码相关：</p>
+<p>0.0.0.0代表默认路由 掩码的作用简单来说是用于划分网段 通过IP与子网掩码的二进制相与”&amp;” ……..</p>
+
+  </article>
+
+  
+    
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>Layne Shieh<br>
+    <strong>本文链接：</strong><a href="http://layneshieh.xyz/2021/05/14/multiroute/" title="http:&#x2F;&#x2F;layneshieh.xyz&#x2F;2021&#x2F;05&#x2F;14&#x2F;multiroute&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;layneshieh.xyz&#x2F;2021&#x2F;05&#x2F;14&#x2F;multiroute&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%A4%9A%E7%BD%91%E5%8D%A1%E7%BD%91%E7%BB%9C%E5%88%86%E8%B7%AF/" rel="tag">多网卡网络分路</a>
+    
+</div>
+
+  <div class="nexmoe-post-footer">
+    <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+  </div>
+</div>
+        <div class="nexmoe-post-right">
+          <div class="nexmoe-fixed">
+            <div class="nexmoe-tool"> 
+              
+                
+              
+              <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script>
+	hljs.initHighlightingOnLoad();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+ 
+
+<script src="/js/app.js?v=1621178353744"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+  
+
+
+
+
+
+</body>
+
+</html>
